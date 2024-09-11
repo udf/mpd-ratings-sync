@@ -1,0 +1,12 @@
+[Unit]
+Description=Dump MPD ratings
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python %h/proj/p/mpdratingsync/dump_ratings.py
+WorkingDirectory=%h/.config/mpd/ratings_sync
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=default.target

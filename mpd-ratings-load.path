@@ -1,0 +1,6 @@
+[Path]
+PathChanged=%h/.config/mpd/ratings_sync
+TriggerLimitBurst=0
+
+[Install]
+WantedBy=default.target
