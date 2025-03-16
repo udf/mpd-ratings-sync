@@ -41,20 +41,24 @@ def load_db(filepath, fetch_date=True) -> dict[str, RatingValue] | dict[str, int
   return {r[0]: r[1] for r in cur.fetchall()}
 
 
-def update_ratings_db(ratings: dict[str, int]):
+def update_ratings_db(new_ratings: dict[str, int]):
   old_ratings = load_db(RATINGS_DB, fetch_date=False)
 
   updated = {}
-  for path, rating in ratings.items():
+  for path, rating in new_ratings.items():
     old_rating = old_ratings.get(path, 0)
     if rating != old_rating:
       updated[path] = rating
   to_delete = []
-  for path in set(old_ratings) - set(ratings):
+  for path in set(old_ratings) - set(new_ratings):
+    rating = old_ratings[path]
+    if rating == 0:
+      # a rating of 0 might be missing from the new ratings
+      # if our db also has it as 0, then there is nothing to do
+      continue
     if mpd_client.find('file', path):
-      # set removed ratings to 0 if they changed
-      if old_ratings[path] != 0:
-        updated[path] = 0
+      # set removed ratings to 0 in our db
+      updated[path] = 0
       continue
     # stop tracking deleted files
     to_delete.append(path)
