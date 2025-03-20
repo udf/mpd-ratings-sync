@@ -37,17 +37,11 @@ for db_file in glob.glob('*_ratings.sql'):
 if changed_ratings:
   print(len(changed_ratings), 'rating(s) to update')
 
-find_files = lambda path: [
-  p for p in
-  (res.get('file', None) for res in mpd_client.search('file', path))
-  if p is not None
-]
-if len(changed_ratings) >= 100:
-  path_mapping = defaultdict(list)
-  for res in mpd_client.listall():
-    if path := res.get('file', None):
-      path_mapping[strip_ext(path)].append(path)
-  find_files = lambda path: path_mapping[path]
+path_mapping = defaultdict(list)
+for res in mpd_client.listall():
+  if path := res.get('file', None):
+    path_mapping[strip_ext(path)].append(path)
+find_files = lambda path: path_mapping[path]
 
 for path, rating in changed_ratings.items():
   real_paths = find_files(path)
