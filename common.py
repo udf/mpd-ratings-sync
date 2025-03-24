@@ -3,10 +3,12 @@ import json
 import socket
 import re
 import sqlite3
+import sys
 from collections import namedtuple
 
 from mpd import MPDClient
 
+sys.stdout.reconfigure(encoding='utf-8')
 RATING_RE = re.compile(r'rating=(\d+)')
 RATINGS_DB = f'{socket.gethostname()}_ratings.sql'
 RatingValue = namedtuple('RatingValue', ('rating', 'updated'))
