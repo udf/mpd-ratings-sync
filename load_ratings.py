@@ -18,7 +18,7 @@ def strip_rating_exts(rating_dict):
   return ratings
 
 
-default_file_rating = RatingValue(-1, 0)
+default_file_rating = RatingValue(0, 0)
 # find all ratings that are newer than our ratings
 our_ratings = strip_rating_exts(load_db(RATINGS_DB))
 changed_ratings = {}
