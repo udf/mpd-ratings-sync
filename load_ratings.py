@@ -50,7 +50,7 @@ find_files = lambda path: path_mapping[path]
 for path, rating in changed_ratings.items():
   real_paths = find_files(path)
   for real_path in real_paths:
-    print(f'rating={rating.rating}', real_path, path_srcs.get(path))
+    print(f'rating={rating.rating}', real_path, path_src.get(path))
     mpd_client.sticker_set('song', real_path, 'rating', rating.rating)
   if not real_paths:
     print('Not found', f'rating={rating.rating}', path, {path_src.get(path)})
